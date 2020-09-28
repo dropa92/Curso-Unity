@@ -21,7 +21,7 @@ public class ScriptTimer : MonoBehaviour
     {
         //El DeltaTime es el tiempo en segundos que ha pasado desde que se renderizó en pantalla el último Frame anterior
         countDown = countDown - Time.deltaTime;
-        Debug.Log("Cuenta atrás: " + countDown);
+//        Debug.Log("Cuenta atrás: " + countDown);
         if (countDown <= 0)
         {
             Debug.Log("Te has quedado sin tiempo... HAS PERDIDO");
