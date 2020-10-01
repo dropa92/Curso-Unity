@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5878786208558037535}
   - component: {fileID: 5878786208558037534}
   - component: {fileID: 5878786208558037529}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BigPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
