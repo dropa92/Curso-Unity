@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerControlerScript : MonoBehaviour{
 
@@ -43,14 +44,19 @@ public class PlayerControlerScript : MonoBehaviour{
     void Update()
     {
 
-        //Here, we check if the key Space is down, the character jumps
-        if (Input.GetKeyDown(KeyCode.Space))
+        //If the game is inside of gameplay, the character can jump
+        if (GameManager.sharedInstance.currentGameState == GameState.inGame) {
+
+            //Here, we check if the key Space is down, the character jumps
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
+               
             Jump();
         }
 
         //Check the character is touching the ground
         animator.SetBool("isGrounded", IsTouchingTheGround());
+        }
     }
 
 
@@ -58,7 +64,10 @@ public class PlayerControlerScript : MonoBehaviour{
     //This method is called by Unity every 0.1 second and is very usefull to make movements as run or hit
      void FixedUpdate()
     {
-        
+
+        //If the game is inside of gameplay, the character can move
+        if (GameManager.sharedInstance.currentGameState == GameState.inGame) { 
+
         if (Input.GetKeyDown(KeyCode.D)) { 
         if (ridgiBody.velocity.x < runningSpeed)
         {                           
@@ -79,7 +88,7 @@ public class PlayerControlerScript : MonoBehaviour{
             }
         }
 
-
+        }
     }
 
 
@@ -89,14 +98,17 @@ public class PlayerControlerScript : MonoBehaviour{
     /*This method makes the character jump multiplying the jump force at vector Y, and the way that the force is applied,
      * in this case is impulse
      */
+
     void Jump()
     {
         if (IsTouchingTheGround())
         {
+            Debug.Log("El personaje está tocando el suelo");
             ridgiBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
         
     }
+
 
 
 
@@ -109,12 +121,13 @@ public class PlayerControlerScript : MonoBehaviour{
          * the ground until 30cm
          */
         if (Physics2D.Raycast(this.transform.position, Vector2.down, 0.3f, groundLayer)){
+
             
-        
-        return true;
+            return true;
         }
         else
         {
+           
             return false;
         }
     }

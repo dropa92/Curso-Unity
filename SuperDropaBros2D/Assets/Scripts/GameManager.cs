@@ -15,6 +15,9 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
 
+    //Variable which refers to GameManager
+    public static GameManager sharedInstance;
+
     /**
      *Variable to know what's the game's state right now
      *at the beginning it will be 'Menu'
@@ -23,10 +26,33 @@ public class GameManager : MonoBehaviour
 
 
 
+    private void Awake()
+    {
+        sharedInstance = this;
+    }
+
+    private void Update()
+    {
+        //If the button Start is pressed, the game will continue
+        if (Input.GetButtonDown("Start"))
+        {
+            
+            StartGame();
+        }
+
+        //If the button Pause is pressed, the game will pause
+        if (Input.GetButtonDown("Pause"))
+        {
+            BackToMenu();
+        }
+  
+    }
+
 
     private void Start()
     {
         StartGame();
+       
     }
 
 
