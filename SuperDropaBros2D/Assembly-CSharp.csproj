@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerControlerScript.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\KillzoneScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

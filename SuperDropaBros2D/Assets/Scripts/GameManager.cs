@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         //If the button Start is pressed, the game will continue
-        if (Input.GetButtonDown("Start"))
+        if (Input.GetButtonDown("Start") && currentGameState!=GameState.inGame)
         {
             
             StartGame();
@@ -59,16 +59,17 @@ public class GameManager : MonoBehaviour
 
 
     //This method is responsable to start the game
-    void StartGame()
+    public void StartGame()
     {
         SetGameState(GameState.inGame);
+        PlayerControlerScript.sharedInstance.StartGame();
     }
 
 
 
 
     //This method is responsable to finish the game when the player dead
-    void GameOver()
+    public void GameOver()
     {
         SetGameState(GameState.gameOver);
     }

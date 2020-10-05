@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,7 +15,10 @@ public class PlayerControlerScript : MonoBehaviour{
     public Animator animator;       //The character's animation
 
     public float runningSpeed = 1.5f;   //This will be the speed of the character
-    
+
+    public static PlayerControlerScript sharedInstance; //it is used to make a singletone on this class
+
+    public Vector3 initialPosition; //it will be the initial player's position
     
 
 
@@ -22,19 +26,26 @@ public class PlayerControlerScript : MonoBehaviour{
     //Before the game starts, the game have to be configured
     void Awake()
     {
+        //we do a singletone on this class with this variable
+        sharedInstance = this;
+
         //We reference our rigidBody with the Rigidbody2D in the Scene 
-        ridgiBody = GetComponent<Rigidbody2D>();    
-    }
+        ridgiBody = GetComponent<Rigidbody2D>();
+
+        //we assign the position when the player starts the game to the variable initialPosition to know its first position
+        initialPosition = this.transform.position;
+    }   
 
 
 
 
 
     // Start is called before the first frame update
-    void Start()
+    public void StartGame()
     {
         animator.SetBool("isAlive", true);
         animator.SetBool("isGrounded", true);
+        this.transform.position = initialPosition;
     }
 
 
@@ -130,6 +141,15 @@ public class PlayerControlerScript : MonoBehaviour{
            
             return false;
         }
+    }
+
+    //This method kill the player
+    public void kill()
+    {
+        //Change the gameState at game manager
+        GameManager.sharedInstance.GameOver();
+        //change to the kill animation
+        this.animator.SetBool("isAlive", false);
     }
 
 
