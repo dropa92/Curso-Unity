@@ -34,6 +34,7 @@ public class PlayerControlerScript : MonoBehaviour{
 
         //we assign the position when the player starts the game to the variable initialPosition to know its first position
         initialPosition = this.transform.position;
+     
     }   
 
 
@@ -112,6 +113,7 @@ public class PlayerControlerScript : MonoBehaviour{
 
     void Jump()
     {
+
         if (IsTouchingTheGround())
         {
             Debug.Log("El personaje está tocando el suelo");
@@ -132,7 +134,7 @@ public class PlayerControlerScript : MonoBehaviour{
          * the ground until 30cm
          */
         if (Physics2D.Raycast(this.transform.position, Vector2.down, 0.3f, groundLayer)){
-
+            
             
             return true;
         }
