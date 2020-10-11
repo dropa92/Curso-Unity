@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7400301764697158029}
   - component: {fileID: 7846761683590323093}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Block 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 7400301765315190911}
   - component: {fileID: 7400301765315190848}
   - component: {fileID: 7400301765315190849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KillZone (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7400301765608361677}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
@@ -652,7 +652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7400301765986227042}
   - component: {fileID: 7400301765986227041}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ExitZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +708,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7400301766022738310}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ExitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
