@@ -19,6 +19,10 @@ public class LevelGenerator : MonoBehaviour
     private void Start()
     {
         AddLevelBlock();
+        AddLevelBlock();
+        AddLevelBlock();
+        AddLevelBlock();
+
     }
 
     //This method add a new block to level
@@ -47,12 +51,12 @@ public class LevelGenerator : MonoBehaviour
         }
 
         //We have to correct the spawnPosition to create the different blocks in a correct way
-      /*  Vector3 correction = new Vector3(spawnPosition.x - currentBlock.startPoint.position.x,
+        Vector3 correction = new Vector3(spawnPosition.x - currentBlock.startPoint.position.x,
                                        spawnPosition.y - currentBlock.startPoint.position.y,
-                                       0);*/
+                                       0);
 
         //Assign the position to current block
-        currentBlock.transform.position = spawnPosition;
+        currentBlock.transform.position = correction;
 
         //finally add the block in the scene
         currentBlocks.Add(currentBlock);
