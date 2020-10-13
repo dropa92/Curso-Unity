@@ -59,8 +59,9 @@
     <Compile Include="Assets\Scripts\KillzoneScript.cs" />
     <Compile Include="Assets\Scripts\PlayerControlerScript.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\LevelGenerator.cs" />
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\LeaveZone.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

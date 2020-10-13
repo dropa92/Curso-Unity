@@ -18,10 +18,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
-        AddLevelBlock();
-        AddLevelBlock();
-        AddLevelBlock();
-        AddLevelBlock();
+        GenerateInitialBlocks();
 
     }
 
@@ -66,18 +63,31 @@ public class LevelGenerator : MonoBehaviour
     //This method remove the oldest block in the level
     public void RemoveOldestLevelBlock()
     {
+        //Create a levelBloc Object and reference to the first block in currentBlocks
+        LevelBlock oldestBlock = currentBlocks[0];
 
+        //delete the block inside of the List
+        currentBlocks.Remove(oldestBlock);
+
+        //Destroy the object inside the scene
+        Destroy(oldestBlock.gameObject);
     }
 
     //This method remove all the blocks inside the level
     public void RemoveAllTheBlocks()
     {
-
+        while (currentBlocks.Count > 0)
+        {
+            RemoveOldestLevelBlock();
+        }
     }
 
     //This method generates the initial blocks of the level
     public void GenerateInitialBlocks()
     {
-
+        for(int i = 0; i < 3; i++)
+        {
+            AddLevelBlock();
+        }
     }
 }

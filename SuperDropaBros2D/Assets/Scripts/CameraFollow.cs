@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-
-    public Transform target;
-    public Vector3 offset = new Vector3(0.1f, 7.0f, -10);
-    public float dampTime = 0.3f;
-    public Vector3 velocity = Vector3.zero;
+    
+    public Transform target;                                    //This variable is the target that the camera has to follow
+    public Vector3 offset = new Vector3(0.1f, 7.0f, -10);       //Distance from where the camera follow the player
+    public float dampTime = 0.3f;                               //Time passed before the camera begins to mover itself
+    public Vector3 velocity = Vector3.zero;                     //movement's velocity of the camera
 
     // Start is called before the first frame update
     private void Awake()
     {
+        //Number of frames of the game
         Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //coordenates of the Target's point translated to camera's coordenates  
         Vector3 pointToMove = GetComponent<Camera>().WorldToViewportPoint(target.position);
+
+        //
         Vector3 delta = target.position - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(offset.x, offset.y, pointToMove.z));
 
         Vector3 destination = pointToMove + delta;
