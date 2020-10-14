@@ -17,12 +17,14 @@ public class GameManager : MonoBehaviour
 
     //Variable which refers to GameManager
     public static GameManager sharedInstance;
-
+    bool startedGame = false;
     /**
      *Variable to know what's the game's state right now
      *at the beginning it will be 'Menu'
      */
     public GameState currentGameState = GameState.menu;
+
+    public Canvas menuCanvas;
 
 
 
@@ -36,13 +38,15 @@ public class GameManager : MonoBehaviour
         //If the button Start is pressed, the game will continue
         if (Input.GetButtonDown("Start") && currentGameState!=GameState.inGame)
         {
-            
+           
             StartGame();
+           
         }
 
         //If the button Pause is pressed, the game will pause
         if (Input.GetButtonDown("Pause"))
         {
+           
             BackToMenu();
         }
   
@@ -58,12 +62,39 @@ public class GameManager : MonoBehaviour
 
 
 
+
+
     //This method is responsable to start the game
     public void StartGame()
     {
         SetGameState(GameState.inGame);
+       
+
+        //get the GameObject MainCamera
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        //Get the Component CameraFollow
+        CameraFollow cameraFollow = camera.GetComponent<CameraFollow>();
+
+        //Call the method ResetCameraPosition()
+        cameraFollow.ResetCameraPosition();
+
+        if (PlayerControlerScript.sharedInstance.transform.position.x>80)
+        {
+            LevelGenerator.sharedInstance.RemoveAllTheBlocks();
+            LevelGenerator.sharedInstance.GenerateInitialBlocks();
+        }
+
         PlayerControlerScript.sharedInstance.StartGame();
+
+        
+        
+
     }
+
+
+
+
 
 
 
@@ -72,6 +103,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         SetGameState(GameState.gameOver);
+       
     }
 
 
@@ -80,6 +112,7 @@ public class GameManager : MonoBehaviour
     void BackToMenu()
     {
         SetGameState(GameState.menu);
+        
     }
 
 
@@ -89,15 +122,15 @@ public class GameManager : MonoBehaviour
 
         if (newGameState == GameState.menu)
         {
-            //we have  to prepare the scene to show the menu
+            menuCanvas.enabled = true;
         }
         else if (newGameState == GameState.inGame)
         {
-            //we have to prepare the scene to play
+            menuCanvas.enabled = false;
         }
         else if (newGameState == GameState.gameOver)
         {
-            //we have to prepare the scene to finish the game
+            menuCanvas.enabled = false;
         }
 
 
