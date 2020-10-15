@@ -80,11 +80,13 @@ public class PlayerControlerScript : MonoBehaviour{
         //If the game is inside of gameplay, the character can move
         if (GameManager.sharedInstance.currentGameState == GameState.inGame) { 
 
-        if (Input.GetKeyDown(KeyCode.D)) { 
-        if (ridgiBody.velocity.x < runningSpeed)
-        {                           
-                                    //We assing positive speed to the character's movement at the X axis to go right and keep the current speed at the Y axis  
-            ridgiBody.velocity = new Vector2(runningSpeed, ridgiBody.velocity.y);
+        if (Input.GetKeyDown(KeyCode.D)) {
+                if (ridgiBody.velocity.x < runningSpeed)
+                {
+                    
+                    //We assing positive speed to the character's movement at the X axis to go right and keep the current speed at the Y axis  
+                    ridgiBody.velocity = new Vector2(runningSpeed, ridgiBody.velocity.y);
+                
         }
     }
 

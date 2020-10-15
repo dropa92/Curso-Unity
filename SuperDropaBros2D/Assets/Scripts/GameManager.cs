@@ -17,14 +17,14 @@ public class GameManager : MonoBehaviour
 
     //Variable which refers to GameManager
     public static GameManager sharedInstance;
-    bool startedGame = false;
+    
     /**
      *Variable to know what's the game's state right now
      *at the beginning it will be 'Menu'
      */
     public GameState currentGameState = GameState.menu;
 
-    public Canvas menuCanvas;
+    public Canvas menuCanvas, canvasGame, canvasGameOver;
 
 
 
@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
         {
            
             BackToMenu();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            exitGame();
         }
   
     }
@@ -106,10 +111,13 @@ public class GameManager : MonoBehaviour
        
     }
 
-
+    public void exitGame()
+    {
+        Application.Quit();
+    }
 
     //this method is responsable to back the menu when the player want
-    void BackToMenu()
+    public void BackToMenu()
     {
         SetGameState(GameState.menu);
         
@@ -123,14 +131,20 @@ public class GameManager : MonoBehaviour
         if (newGameState == GameState.menu)
         {
             menuCanvas.enabled = true;
+            canvasGame.enabled=false;
+            canvasGameOver.enabled = false;
         }
         else if (newGameState == GameState.inGame)
         {
             menuCanvas.enabled = false;
+            canvasGame.enabled= true;
+            canvasGameOver.enabled = false;
         }
         else if (newGameState == GameState.gameOver)
         {
             menuCanvas.enabled = false;
+            canvasGame.enabled= false;
+            canvasGameOver.enabled = true;
         }
 
 
