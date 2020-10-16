@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     public Canvas menuCanvas, canvasGame, canvasGameOver;
 
+    public int collectedObjetcs = 0;
+
 
 
     private void Awake()
@@ -150,5 +152,11 @@ public class GameManager : MonoBehaviour
 
         //We assign the new state of the game
         this.currentGameState = newGameState;
+    }
+
+    public void collectObjects(int objectValue)
+    {
+        this.collectedObjetcs += objectValue;
+        Debug.Log(this.collectedObjetcs.ToString());
     }
 }

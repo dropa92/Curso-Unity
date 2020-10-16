@@ -35,5 +35,6 @@ public class CollectableScript : MonoBehaviour
     {
         isCollected =true;
         hide();
+        GameManager.sharedInstance.collectObjects(value);
     }
 }
