@@ -155,6 +155,12 @@ public class PlayerControlerScript : MonoBehaviour{
         //change to the kill animation
         this.animator.SetBool("isAlive", false);
     }
+	public float GetDistance(){
+	
+	float travelledDistance= Vector2.Distance(new Vector2(initialPosition.x,0), new Vector2(this.transform.position.x,0));
 
+	
+	return travelledDistance;
+	}
 
 }

@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\LevelGenerator.cs" />
     <Compile Include="Assets\Scripts\CollectableScript.cs" />
+    <Compile Include="Assets\Scripts\ViewInGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
