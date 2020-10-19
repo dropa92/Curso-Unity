@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class PlayerControlerScript : MonoBehaviour{
 
-    public float jumpForce = 5f;    //Jump's force
+    public float jumpForce = 4f;    //Jump's force
 
     private Rigidbody2D ridgiBody;
 
@@ -19,6 +19,8 @@ public class PlayerControlerScript : MonoBehaviour{
     public static PlayerControlerScript sharedInstance; //it is used to make a singletone on this class
 
     public Vector3 initialPosition; //it will be the initial player's position
+
+    private int healthPoints, manaPoints;
     
 
 
@@ -35,6 +37,8 @@ public class PlayerControlerScript : MonoBehaviour{
         //we assign the position when the player starts the game to the variable initialPosition to know its first position
         initialPosition = this.transform.position;
      
+	
+
     }   
 
 
@@ -43,10 +47,12 @@ public class PlayerControlerScript : MonoBehaviour{
 
     // Start is called before the first frame update
     public void StartGame()
-    {
-        animator.SetBool("isAlive", true);
-        animator.SetBool("isGrounded", true);
-        this.transform.position = initialPosition;
+    {   
+	    this.healthPoints=40;
+	    this.manaPoints=30;
+        animator.SetBool("isAlive", true);		//This set the character's state to Alive
+        animator.SetBool("isGrounded", true);		//this set the character is on the ground
+        this.transform.position = initialPosition;	//this set the initial position of the character
     }
 
 
@@ -79,7 +85,8 @@ public class PlayerControlerScript : MonoBehaviour{
 
         //If the game is inside of gameplay, the character can move
         if (GameManager.sharedInstance.currentGameState == GameState.inGame) { 
-
+	
+	//If the Key D is down
         if (Input.GetKeyDown(KeyCode.D)) {
                 if (ridgiBody.velocity.x < runningSpeed)
                 {
@@ -92,9 +99,10 @@ public class PlayerControlerScript : MonoBehaviour{
 
 
 
-
+	//If the Key A is down
         if (Input.GetKeyDown(KeyCode.A))
-        {
+        {	
+		//If the character velocity is greater than running speed
             if (ridgiBody.velocity.x > -runningSpeed)
             {
                 //We assing negative speed to the character's movement at the X axis to go left and keep the current speed at the Y axis  
@@ -115,12 +123,19 @@ public class PlayerControlerScript : MonoBehaviour{
 
     void Jump()
     {
-
+	//If the character is touching the ground, the character jumps
         if (IsTouchingTheGround())
         {
-            Debug.Log("El personaje está tocando el suelo");
-            ridgiBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
+            if(this.manaPoints>=5){
+	    
+	    
+            ridgiBody.AddForce(Vector2.up * jumpForce *1.5f, ForceMode2D.Impulse);
+	    this.manaPoints-=5;
+	    }else{
+	    ridgiBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+	    }
+	    }
         
     }
 
@@ -152,15 +167,47 @@ public class PlayerControlerScript : MonoBehaviour{
     {
         //Change the gameState at game manager
         GameManager.sharedInstance.GameOver();
+
         //change to the kill animation
         this.animator.SetBool("isAlive", false);
+
+    	//get the current maximum distance
+	float  currentMaxDistance=PlayerPrefs.GetFloat("maxDistance",0);
+
+	//If the current maximum distance is less than the current distance, set a new record distance	
+	if(currentMaxDistance<this.GetDistance()){
+	
+		PlayerPrefs.SetFloat("maxDistance",this.GetDistance());
+	
+	}
+    
     }
+
+    	//get the current distance
 	public float GetDistance(){
 	
 	float travelledDistance= Vector2.Distance(new Vector2(initialPosition.x,0), new Vector2(this.transform.position.x,0));
 
-	Debug.Log(travelledDistance);
+	
 	return travelledDistance;
 	}
+	public void CollectHealth(int points){
+	
+		this.healthPoints+=points;
+		if(this.healthPoints<=40){
+		this.healthPoints=40;
+		}
+		
+	
+	}
 
+	public void CollectMana(int Points){
+	
+		this.manaPoints+=points;
+
+		if(manaPoints>=30){
+	manaPoints=30;
+	
+	}
+}
 }

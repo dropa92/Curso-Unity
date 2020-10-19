@@ -22,11 +22,11 @@ public class GameManager : MonoBehaviour
      *Variable to know what's the game's state right now
      *at the beginning it will be 'Menu'
      */
-    public GameState currentGameState = GameState.menu;
+    public GameState currentGameState = GameState.menu;		//State which the game starts
 
-    public Canvas menuCanvas, canvasGame, canvasGameOver;
+    public Canvas menuCanvas, canvasGame, canvasGameOver;	//Different Canvas to show inside of the game
 
-    public int collectedObjetcs = 0;
+    public int collectedObjetcs = 0;				//Value of the objects that the player collects
 
 
 
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
            
             BackToMenu();
         }
-
+	//If the key Escape is pressed, the game will end
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             exitGame();
@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
     }
 
 
+
+    //the game starts
     private void Start()
     {
         StartGame();
@@ -154,6 +156,7 @@ public class GameManager : MonoBehaviour
         this.currentGameState = newGameState;
     }
 
+    //Add the value of the objects which is collected by the player
     public void collectObjects(int objectValue)
     {
         this.collectedObjetcs += objectValue;
