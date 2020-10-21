@@ -14,13 +14,17 @@ public class PlayerControlerScript : MonoBehaviour{
 
     public Animator animator;       //The character's animation
 
-    public float runningSpeed = 1.5f;   //This will be the speed of the character
+    public float runningSpeed = 6.0f;   //This will be the speed of the character
 
     public static PlayerControlerScript sharedInstance; //it is used to make a singletone on this class
 
     public Vector3 initialPosition; //it will be the initial player's position
 
-    private int healthPoints, manaPoints;
+    private int healthPoints, manaPoints;	//Points to health and mana
+
+    public const int INITIALHEALTH=40, INITIALMANA=40, COST_SUPERJUMP=5;
+    
+    public const float MIN_SPEED=1.5F, MAX_MANA=40.0F, MAX_HEALTH=40.0F, FORCE_SUPERJUMP=1.5f ;
     
 
 
@@ -48,8 +52,8 @@ public class PlayerControlerScript : MonoBehaviour{
     // Start is called before the first frame update
     public void StartGame()
     {   
-	    this.healthPoints=40;
-	    this.manaPoints=30;
+	    this.healthPoints=INITIALHEALTH;
+	    this.manaPoints=INITIALMANA;
         animator.SetBool("isAlive", true);		//This set the character's state to Alive
         animator.SetBool("isGrounded", true);		//this set the character is on the ground
         this.transform.position = initialPosition;	//this set the initial position of the character
@@ -66,11 +70,21 @@ public class PlayerControlerScript : MonoBehaviour{
         if (GameManager.sharedInstance.currentGameState == GameState.inGame) {
 
             //Here, we check if the key Space is down, the character jumps
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Space))
         {
                
-            Jump();
+            Jump(false);
         }
+
+//Here, we check if the mouse's button zero is down, the character super jumps
+
+	    if (Input.GetMouseButtonDown(0))
+        {
+               
+            Jump(true);
+        }
+
+
 
         //Check the character is touching the ground
         animator.SetBool("isGrounded", IsTouchingTheGround());
@@ -88,11 +102,16 @@ public class PlayerControlerScript : MonoBehaviour{
 	
 	//If the Key D is down
         if (Input.GetKeyDown(KeyCode.D)) {
-                if (ridgiBody.velocity.x < runningSpeed)
+
+		float currentSpeed=(runningSpeed-MIN_SPEED)*this.healthPoints/MAX_HEALTH;
+
+                if (ridgiBody.velocity.x < currentSpeed)
                 {
+
+			
                     
                     //We assing positive speed to the character's movement at the X axis to go right and keep the current speed at the Y axis  
-                    ridgiBody.velocity = new Vector2(runningSpeed, ridgiBody.velocity.y);
+                    ridgiBody.velocity = new Vector2(currentSpeed, ridgiBody.velocity.y);
                 
         }
     }
@@ -102,11 +121,15 @@ public class PlayerControlerScript : MonoBehaviour{
 	//If the Key A is down
         if (Input.GetKeyDown(KeyCode.A))
         {	
+
+		float currentSpeed=(runningSpeed-MIN_SPEED)*this.healthPoints/MAX_HEALTH;
+
+
 		//If the character velocity is greater than running speed
-            if (ridgiBody.velocity.x > -runningSpeed)
+            if (ridgiBody.velocity.x > -currentSpeed)
             {
                 //We assing negative speed to the character's movement at the X axis to go left and keep the current speed at the Y axis  
-                ridgiBody.velocity = new Vector2(-runningSpeed, ridgiBody.velocity.y);
+                ridgiBody.velocity = new Vector2(-currentSpeed, ridgiBody.velocity.y);
             }
         }
 
@@ -121,16 +144,19 @@ public class PlayerControlerScript : MonoBehaviour{
      * in this case is impulse
      */
 
-    void Jump()
+    void Jump(bool superJump)
     {
 	//If the character is touching the ground, the character jumps
         if (IsTouchingTheGround())
         {
-            if(this.manaPoints>=5){
+		//If the manaPoints are same o more than 5 and super jum is called, the character will super jum
+            if(this.manaPoints>=COST_SUPERJUMP && superJump==true){
 	    
 	    
-            ridgiBody.AddForce(Vector2.up * jumpForce *1.5f, ForceMode2D.Impulse);
-	    this.manaPoints-=5;
+            ridgiBody.AddForce(Vector2.up * jumpForce *FORCE_SUPERJUMP, ForceMode2D.Impulse);
+	    this.manaPoints-=COST_SUPERJUMP;
+
+	    //the character does a normal jump
 	    }else{
 	    ridgiBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
@@ -191,23 +217,37 @@ public class PlayerControlerScript : MonoBehaviour{
 	
 	return travelledDistance;
 	}
+
+	//This method is called when the character collects a health potion
 	public void CollectHealth(int points){
 	
 		this.healthPoints+=points;
-		if(this.healthPoints<=40){
-		this.healthPoints=40;
+		if(this.healthPoints<=(int)MAX_HEALTH){
+		this.healthPoints=(int)MAX_HEALTH;
 		}
 		
 	
 	}
 
-	public void CollectMana(int Points){
+	//this method is called when the character collects a mana potion
+	public void CollectMana(int points){
 	
 		this.manaPoints+=points;
 
-		if(manaPoints>=30){
-	manaPoints=30;
+		if(manaPoints>=(int)MAX_MANA){
+	manaPoints=(int)MAX_MANA; 
 	
 	}
 }
+
+	public int GetHealthPoints(){
+	
+	return this.healthPoints;
+	}
+
+	public int GetManaPoints(){
+	
+	return this.manaPoints;
+	}
 }
+
