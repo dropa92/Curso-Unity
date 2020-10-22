@@ -56,6 +56,7 @@ public class PlayerControlerScript : MonoBehaviour{
 	    this.manaPoints=INITIALMANA;
         animator.SetBool("isAlive", true);		//This set the character's state to Alive
         animator.SetBool("isGrounded", true);		//this set the character is on the ground
+	animator.SetBool("isMoving",false);
         this.transform.position = initialPosition;	//this set the initial position of the character
     }
 
@@ -88,7 +89,7 @@ public class PlayerControlerScript : MonoBehaviour{
 
         //Check the character is touching the ground
         animator.SetBool("isGrounded", IsTouchingTheGround());
-        }
+	        }
     }
 
 
@@ -102,6 +103,7 @@ public class PlayerControlerScript : MonoBehaviour{
 	
 	//If the Key D is down
         if (Input.GetKey(KeyCode.D)) {
+		animator.SetBool("isMoving",true);
 
 		float currentSpeed=(runningSpeed-MIN_SPEED)*this.healthPoints/MAX_HEALTH;
 
@@ -118,9 +120,12 @@ public class PlayerControlerScript : MonoBehaviour{
 
 
 
+
+
 	//If the Key A is down
         if (Input.GetKey(KeyCode.A))
         {	
+	animator.SetBool("isMoving",true);
 
 		float currentSpeed=(runningSpeed-MIN_SPEED)*this.healthPoints/MAX_HEALTH;
 
@@ -128,11 +133,13 @@ public class PlayerControlerScript : MonoBehaviour{
 		//If the character velocity is greater than running speed
             if (ridgiBody.velocity.x > -currentSpeed)
             {
-                //We assing negative speed to the character's movement at the X axis to go left and keep the current speed at the Y axis  
+		                    //We assing negative speed to the character's movement at the X axis to go left and keep the current speed at the Y axis  
                 ridgiBody.velocity = new Vector2(-currentSpeed, ridgiBody.velocity.y);
             }
         }
 
+	if(!Input.GetKey(KeyCode.A)&& !Input.GetKey(KeyCode.D))
+	animator.SetBool("isMoving",false);
         }
     }
 
