@@ -10,6 +10,8 @@ public class PlayerControlerScript : MonoBehaviour{
 
     private Rigidbody2D ridgiBody;
 
+    public AudioClip jumpSound;
+
     public LayerMask groundLayer;   //This variable checks the layer of the ground
 
     public Animator animator;       //The character's animation
@@ -72,10 +74,15 @@ public class PlayerControlerScript : MonoBehaviour{
 
             //Here, we check if the key Space is down, the character jumps
             if (Input.GetKeyDown(KeyCode.Space))
-        {
+        { animator.SetBool("isJumping",true);
+
                
             Jump(false);
-        }
+        }else{
+	
+	animator.SetBool("isJumping",false);
+
+	}
 
 //Here, we check if the mouse's button zero is down, the character super jumps
 
@@ -89,6 +96,7 @@ public class PlayerControlerScript : MonoBehaviour{
 
         //Check the character is touching the ground
         animator.SetBool("isGrounded", IsTouchingTheGround());
+	
 	        }
     }
 
@@ -138,7 +146,7 @@ public class PlayerControlerScript : MonoBehaviour{
             }
         }
 
-	if(!Input.GetKey(KeyCode.A)&& !Input.GetKey(KeyCode.D))
+	if(!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
 	animator.SetBool("isMoving",false);
         }
     }
@@ -153,23 +161,29 @@ public class PlayerControlerScript : MonoBehaviour{
 
     void Jump(bool superJump)
     {
+	   
 	//If the character is touching the ground, the character jumps
         if (IsTouchingTheGround())
         {
+		GetComponent<AudioSource>().PlayOneShot(this.jumpSound);
 		//If the manaPoints are same o more than 5 and super jum is called, the character will super jum
             if(this.manaPoints>=COST_SUPERJUMP && superJump==true){
 	    
 	    
             ridgiBody.AddForce(Vector2.up * jumpForce *FORCE_SUPERJUMP, ForceMode2D.Impulse);
 	    this.manaPoints-=COST_SUPERJUMP;
+		
 
 	    //the character does a normal jump
 	    }else{
+
 	    ridgiBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
+	    
 	    }
 	    }
-        
+
+	        
     }
 
 
