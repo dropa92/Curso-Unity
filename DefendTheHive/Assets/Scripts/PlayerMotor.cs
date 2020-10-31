@@ -17,6 +17,8 @@ public class PlayerMotor : MonoBehaviour
 
 	private Animator m_Animator;				//Character's animation
 
+	private bool isGrounded;
+
 
 
 
@@ -33,10 +35,67 @@ public class PlayerMotor : MonoBehaviour
     {
         //Check the character is at the ground
 	CheckGroundStatus();
+
+
+	//Check the amount of movement H/V
+	horizontal=CrossPlatformInputManager.GetAxis("Horizontal");
+	vertical=CrossPlatformInputManager.GetAxis("Vertical");
+	
+	//Check to jump
+	if(Input.GetKeyDown(KeyCode.Space)&& isGrounded){
+	
+		m_Rigidbody.AddForce(0,jumpForce,0);   
+	
+	}
+	
+	//check to run
+	if(Input.GetKeyDown(KeyCode.LeftShift)&& isGrounded){
+	
+		currentMoveSpeed=runSpeed;
+	
+	}
+
+	//check to stop running
+	if(Input.GetKeyUp(KeyCode.LeftShift)){
+	
+		currentMoveSpeed=moveSpeed;  
+	}
+
     }
 
 
-    private bool isOnTheGround;
+    private float turnAround, forwardAmount;		//turning and forward speed
+    [SerializeField] float stationaryTurnAround = 180;  //turning 180 degree in one second stopped
+    [SerializeField] float movingTurnSpeed= 360;	//turning 360 degree running
+    public Transform m_camera;				//Main camera
+    private Vector3 cameraForward;			//Camera's target
+    private Vector3 move;
+    private float jump;
+    
+
+    private void FixedUpdate(){
+    
+    if(m_camera!=null){
+     
+	    cameraForward=Vector3.Scale(m_camera.forward, new Vector3(1,0,1)).normalized;
+	    move = vertical*cameraForward + horizontal*m_camera.right;
+
+    
+    }else{
+    
+	    move=vertical*Vector3.forward+horizontal * Vector3.right;
+    
+    }
+
+    if(move.magnitude>0){
+    
+    Move(move);
+    }
+    
+    }
+
+
+    
     //Check the character is at the ground
     void CheckGroundStatus(){
     
