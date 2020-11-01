@@ -71,10 +71,11 @@ public class PlayerMotor : MonoBehaviour
     private Vector3 cameraForward;			//Camera's target
     private Vector3 move;
     private float jump;
-    
+    private Vector3 groundNormal;
 
     private void FixedUpdate(){
     
+	    //If the camera is asignated, moves to the direction where it is looking
     if(m_camera!=null){
      
 	    cameraForward=Vector3.Scale(m_camera.forward, new Vector3(1,0,1)).normalized;
@@ -82,7 +83,8 @@ public class PlayerMotor : MonoBehaviour
 
     
     }else{
-    
+
+    		//We calculate de absolute coordenates of the world
 	    move=vertical*Vector3.forward+horizontal * Vector3.right;
     
     }
@@ -100,9 +102,31 @@ public class PlayerMotor : MonoBehaviour
     void CheckGroundStatus(){
     
     }
+
+
+
+
 	//Move the character
-    void Move(Vector3 move){
-    
+    void Move(Vector3 movement){
+   
+	   if(movement.magnitude>1.0f){
+	   
+		//Now we set the lenght to 1
+		movement.Normalize();	
+	   
+	   }
+
+	  movement = transform.InverseTransformDirection(movement); 
+	  CheckGroundStatus();
+
+	  //we modificate the movement over the normal vector to the ground which the character is walking
+	  movement= Vector3.ProjectOnPlane(movement, groundNormal);
+
+	turnAround=Mathf.Atan2(move.x,move.z);
+	  forwardAmount=move.z;
+	  m_Rigidbody.velocity = transform.forward * currentMoveSpeed;
+	  ApplyExtraRotation();
+	   
     
     }
 
